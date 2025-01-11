@@ -23,3 +23,21 @@ func configCellForCollection(_ cell: UIView) {
     cell.layer.shadowRadius = 5
     cell.layer.cornerRadius = 20
 }
+
+func formatCurrencyUS(_ value: Double) -> String {
+    let formatter = NumberFormatter()
+    formatter.locale = Locale(identifier: "en_US")
+    formatter.numberStyle = .currency
+    formatter.currencyCode = "USD"
+    guard let formattedString = formatter.string(from: NSNumber(value: value)) else { return "" }
+    return formattedString
+}
+
+func formatCurrencyBR(_ value: Double) -> String {
+    let formatter = NumberFormatter()
+    formatter.locale = Locale(identifier: "pt_BR")
+    formatter.numberStyle = .currency
+    formatter.currencyCode = "BRL"
+    guard let formattedString = formatter.string(from: NSNumber(value: value)) else { return "" }
+    return formattedString
+}
