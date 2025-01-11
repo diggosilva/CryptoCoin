@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class TableCell: UITableViewCell {
     static let identifier = "TableCell"
@@ -13,7 +14,6 @@ class TableCell: UITableViewCell {
     lazy var marketCapRankLabel: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = "1"
         lbl.textColor = .secondaryLabel
         lbl.font = .systemFont(ofSize: 12, weight: .semibold)
         return lbl
@@ -32,35 +32,30 @@ class TableCell: UITableViewCell {
     lazy var nameLabel: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = "Bitcoin"
-        lbl.font = .systemFont(ofSize: 12)
+        lbl.font = .systemFont(ofSize: 12, weight: .semibold)
         return lbl
     }()
     
     lazy var symbolLabel: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = "BTC"
-        lbl.font = .systemFont(ofSize: 12)
+        lbl.font = .systemFont(ofSize: 12, weight: .semibold)
         return lbl
     }()
     
     lazy var currentPriceLabel: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = "R$ 9,876,54"
         lbl.adjustsFontSizeToFitWidth = true
         lbl.minimumScaleFactor = 0.6
-        lbl.font = .systemFont(ofSize: 12)
+        lbl.font = .systemFont(ofSize: 12, weight: .semibold)
         return lbl
     }()
     
     lazy var percentage24HLabel: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = "1.23%"
-        lbl.font = .boldSystemFont(ofSize: 12)
-        lbl.textColor = .systemGreen
+        lbl.font = .systemFont(ofSize: 12, weight: .semibold)
         return lbl
     }()
     
@@ -76,6 +71,28 @@ class TableCell: UITableViewCell {
     private func setupView() {
         setHierarchy()
         setConstraints()
+    }
+    
+    func configure(model: CoinResponse) {
+        guard let url = URL(string: model.image) else { return }
+        marketCapRankLabel.text = "\(model.marketCapRank)"
+        coinImage.sd_setImage(with: url)
+        nameLabel.text = model.name
+        symbolLabel.text = model.symbol.uppercased()
+        currentPriceLabel.text = formatCurrencyUS(model.currentPrice)
+        percentage24HLabel.text = "\(String(format: "%.2f", model.priceChangePercentage24H))%"
+        percentage24HLabel.textColor = model.priceChangePercentage24H > 0 ? .systemGreen : .systemRed
+    }
+    
+    func configureBR(model: CoinResponse) {
+        guard let url = URL(string: model.image) else { return }
+        marketCapRankLabel.text = "\(model.marketCapRank)"
+        coinImage.sd_setImage(with: url)
+        nameLabel.text = model.name
+        symbolLabel.text = model.symbol.uppercased()
+        currentPriceLabel.text = formatCurrencyBR(model.currentPrice)
+        percentage24HLabel.text = "\(String(format: "%.2f", model.priceChangePercentage24H))%"
+        percentage24HLabel.textColor = model.priceChangePercentage24H > 0 ? .systemGreen : .systemRed
     }
     
     private func setHierarchy() {
