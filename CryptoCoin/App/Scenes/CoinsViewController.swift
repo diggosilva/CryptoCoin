@@ -10,6 +10,7 @@ import UIKit
 class CoinsViewController: UIViewController {
     
     let coinView = CoinView()
+    let viewModel: CoinsViewModelProtocol = CoinsViewModel()
     
     override func loadView() {
         super.loadView()
@@ -20,11 +21,26 @@ class CoinsViewController: UIViewController {
         super.viewDidLoad()
         setNavBar()
         setDelegatesAndDataSources()
+        handleStates()
+        viewModel.fetchCoins()
     }
     
     private func setNavBar() {
-        title = "Preços Online"
+        let dollar = UIAction(title: "Dólar", image: UIImage(systemName: "dollarsign.circle.fill")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)) { action in
+            self.navigationItem.rightBarButtonItem?.image = UIImage(systemName: "dollarsign.circle.fill")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
+            self.viewModel.fetchCoins()
+        }
+        
+        let real = UIAction(title: "Real", image: UIImage(systemName: "brazilianrealsign.circle.fill")?.withTintColor(.systemGreen, renderingMode: .alwaysOriginal)) { action in
+            self.navigationItem.rightBarButtonItem?.image = UIImage(systemName: "brazilianrealsign.circle.fill")?.withTintColor(.systemGreen, renderingMode: .alwaysOriginal)
+            self.viewModel.fetchCoinsBR()
+        }
+        
+        let menu = UIMenu(title: "Conversão da Moeda para:", options: .singleSelection, children: [dollar, real])
+        let barButtonItem = UIBarButtonItem(image: UIImage(systemName: "dollarsign.circle.fill")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal), menu: menu)
+        navigationItem.rightBarButtonItem = barButtonItem
         navigationController?.navigationBar.prefersLargeTitles = true
+        title = "Preços Online"
     }
     
     private func setDelegatesAndDataSources() {
@@ -33,26 +49,84 @@ class CoinsViewController: UIViewController {
         coinView.tableview.delegate = self
         coinView.tableview.dataSource = self
     }
+    
+    private func handleStates() {
+        viewModel.state.bind { state in
+            switch state {
+            case .loading:
+                return self.showLoadingState()
+            case .loaded:
+                return self.showLoadedState()
+            case .error:
+                return self.showErrorState()
+            }
+        }
+    }
+    
+    private func showLoadingState() {
+        coinView.removeFromSuperview()
+    }
+    
+    private func showLoadedState() {
+        coinView.top10Label.text = "Top \(viewModel.numberOfItemsInSection()) Principais Impulsionadores"
+        coinView.collectionView.reloadData()
+        coinView.tableview.reloadData()
+        coinView.spinner.stopAnimating()
+    }
+    
+    private func showErrorState() {
+        let attempt = viewModel.attempts()
+        attempt < 3 ? alertError(title: "Ops... Algo deu errado!", message: "Tentar novamente?") : alertFinal(title: "Desculpe 😔", message: "Tente mais tarde!")
+    }
+    
+    func alertError(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "Sim", style: .default) { action in
+            self.viewModel.fetchCoins()
+        }
+        alert.addAction(ok)
+        alert.addAction(UIAlertAction(title: "Não", style: .cancel, handler: nil))
+        present(alert, animated: true)
+    }
+    
+    func alertFinal(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "Entendi", style: .cancel, handler: nil)
+        alert.addAction(ok)
+        present(alert, animated: true)
+    }
 }
 
 extension CoinsViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return viewModel.numberOfItemsInSection()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionCell.identifier, for: indexPath) as? CollectionCell else { return UICollectionViewCell() }
+        
+        if viewModel.isRealCoin {
+            cell.configureBR(model: viewModel.cellForItemAt(indexPath: indexPath))
+        } else {
+            cell.configure(model: viewModel.cellForItemAt(indexPath: indexPath))
+        }
         return cell
     }
 }
 
 extension CoinsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return viewModel.numberOfRowsInSection()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TableCell.identifier, for: indexPath) as? TableCell else { return UITableViewCell() }
+       
+        if viewModel.isRealCoin {
+            cell.configureBR(model: viewModel.cellForRowAt(indexPath: indexPath))
+        } else {
+            cell.configure(model: viewModel.cellForRowAt(indexPath: indexPath))
+        }
         return cell
     }
 }
