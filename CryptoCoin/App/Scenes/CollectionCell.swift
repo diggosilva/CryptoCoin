@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class CollectionCell: UICollectionViewCell {
     static let identifier = "CollectionCell"
@@ -23,26 +24,23 @@ class CollectionCell: UICollectionViewCell {
     lazy var symbolLabel: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = "BTC"
-        lbl.font = .systemFont(ofSize: 12)
+        lbl.font = .systemFont(ofSize: 12, weight: .semibold)
         return lbl
     }()
     
     lazy var currentPriceLabel: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = "R$ 9,876,54"
         lbl.adjustsFontSizeToFitWidth = true
         lbl.minimumScaleFactor = 0.6
         lbl.textColor = .secondaryLabel
-        lbl.font = .systemFont(ofSize: 12)
+        lbl.font = .systemFont(ofSize: 12, weight: .semibold)
         return lbl
     }()
     
     lazy var percentage24HLabel: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = "1.23%"
         lbl.font = .boldSystemFont(ofSize: 20)
         lbl.textColor = .systemGreen
         return lbl
@@ -61,6 +59,22 @@ class CollectionCell: UICollectionViewCell {
     private func setupView() {
         setHierarchy()
         setConstraints()
+    }
+    
+    func configure(model: CoinResponse) {
+        guard let url = URL(string: model.image) else { return }
+        coinImage.sd_setImage(with: url)
+        symbolLabel.text = model.symbol.uppercased()
+        currentPriceLabel.text = formatCurrencyUS(model.currentPrice)
+        percentage24HLabel.text = "\(String(format: "%.2f", model.priceChangePercentage24H))%"
+    }
+    
+    func configureBR(model: CoinResponse) {
+        guard let url = URL(string: model.image) else { return }
+        coinImage.sd_setImage(with: url)
+        symbolLabel.text = model.symbol.uppercased()
+        currentPriceLabel.text = formatCurrencyBR(model.currentPrice)
+        percentage24HLabel.text = "\(String(format: "%.2f", model.priceChangePercentage24H))%"
     }
     
     private func setHierarchy() {
