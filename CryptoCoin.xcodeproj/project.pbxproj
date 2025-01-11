@@ -6,8 +6,15 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		CF873526082F541D27891947 /* Pods_CryptoCoin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDB91609A250CE2C48A0FCB9 /* Pods_CryptoCoin.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		467FD4788DC2D2318A49809E /* Pods-CryptoCoin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CryptoCoin.debug.xcconfig"; path = "Target Support Files/Pods-CryptoCoin/Pods-CryptoCoin.debug.xcconfig"; sourceTree = "<group>"; };
 		921DDE6B2D2EAC38005AB3D1 /* CryptoCoin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptoCoin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDB91609A250CE2C48A0FCB9 /* Pods_CryptoCoin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CryptoCoin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD2AA44CB9DEB030BF18C5A0 /* Pods-CryptoCoin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CryptoCoin.release.xcconfig"; path = "Target Support Files/Pods-CryptoCoin/Pods-CryptoCoin.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -36,17 +43,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF873526082F541D27891947 /* Pods_CryptoCoin.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		199D7E041DE184D3DF7FA842 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CDB91609A250CE2C48A0FCB9 /* Pods_CryptoCoin.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		68327316D77F12F71B852FCF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				467FD4788DC2D2318A49809E /* Pods-CryptoCoin.debug.xcconfig */,
+				DD2AA44CB9DEB030BF18C5A0 /* Pods-CryptoCoin.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		921DDE622D2EAC38005AB3D1 = {
 			isa = PBXGroup;
 			children = (
 				921DDE6D2D2EAC38005AB3D1 /* CryptoCoin */,
 				921DDE6C2D2EAC38005AB3D1 /* Products */,
+				68327316D77F12F71B852FCF /* Pods */,
+				199D7E041DE184D3DF7FA842 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -65,9 +92,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 921DDE7E2D2EAC39005AB3D1 /* Build configuration list for PBXNativeTarget "CryptoCoin" */;
 			buildPhases = (
+				0977F3182A6520D36A55486D /* [CP] Check Pods Manifest.lock */,
 				921DDE672D2EAC38005AB3D1 /* Sources */,
 				921DDE682D2EAC38005AB3D1 /* Frameworks */,
 				921DDE692D2EAC38005AB3D1 /* Resources */,
+				F7DB158280108482AFE13B50 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -77,8 +106,6 @@
 				921DDE6D2D2EAC38005AB3D1 /* CryptoCoin */,
 			);
 			name = CryptoCoin;
-			packageProductDependencies = (
-			);
 			productName = CryptoCoin;
 			productReference = 921DDE6B2D2EAC38005AB3D1 /* CryptoCoin.app */;
 			productType = "com.apple.product-type.application";
@@ -127,6 +154,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0977F3182A6520D36A55486D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CryptoCoin-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F7DB158280108482AFE13B50 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CryptoCoin/Pods-CryptoCoin-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CryptoCoin/Pods-CryptoCoin-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CryptoCoin/Pods-CryptoCoin-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		921DDE672D2EAC38005AB3D1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -140,8 +209,9 @@
 /* Begin XCBuildConfiguration section */
 		921DDE7F2D2EAC39005AB3D1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 467FD4788DC2D2318A49809E /* Pods-CryptoCoin.debug.xcconfig */;
 			buildSettings = {
-				API_URL_BR = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=24h&locale=pt";
+				API_URL_BR = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=brl&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=24h&locale=pt";
 				API_URL_US = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=24h&locale=en";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -169,8 +239,9 @@
 		};
 		921DDE802D2EAC39005AB3D1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD2AA44CB9DEB030BF18C5A0 /* Pods-CryptoCoin.release.xcconfig */;
 			buildSettings = {
-				API_URL_BR = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=24h&locale=pt";
+				API_URL_BR = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=brl&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=24h&locale=pt";
 				API_URL_US = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=24h&locale=en";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -233,7 +304,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -296,7 +367,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
