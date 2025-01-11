@@ -12,7 +12,6 @@ class CoinView: UIView {
     lazy var top10Label: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = "Top 10 Moedas Impulsionadores"
         lbl.font = .preferredFont(forTextStyle: .headline)
         return lbl
     }()
@@ -78,6 +77,13 @@ class CoinView: UIView {
         return tv
     }()
     
+    lazy var spinner: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.startAnimating()
+        return spinner
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupView()
@@ -94,7 +100,7 @@ class CoinView: UIView {
     
     private func setHierarchy() {
         backgroundColor = .systemBackground
-        addSubviews([top10Label, collectionView, divider, allCoinsLabel, coinLabel, priceLabel, tableview])
+        addSubviews([top10Label, collectionView, divider, allCoinsLabel, coinLabel, priceLabel, tableview, spinner])
     }
     
     private func setConstraints() {
@@ -128,6 +134,9 @@ class CoinView: UIView {
             tableview.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableview.trailingAnchor.constraint(equalTo: trailingAnchor),
             tableview.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            spinner.centerXAnchor.constraint(equalTo: centerXAnchor),
+            spinner.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
     }
 }
