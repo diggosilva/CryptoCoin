@@ -61,7 +61,7 @@ class CollectionCell: UICollectionViewCell {
         setConstraints()
     }
     
-    func configure(model: CoinResponse) {
+    func configure(model: CoinModel) {
         guard let url = URL(string: model.image) else { return }
         coinImage.sd_setImage(with: url)
         symbolLabel.text = model.symbol.uppercased()
@@ -69,7 +69,7 @@ class CollectionCell: UICollectionViewCell {
         percentage24HLabel.text = "\(String(format: "%.2f", model.priceChangePercentage24H))%"
     }
     
-    func configureBR(model: CoinResponse) {
+    func configureBR(model: CoinModel) {
         guard let url = URL(string: model.image) else { return }
         coinImage.sd_setImage(with: url)
         symbolLabel.text = model.symbol.uppercased()

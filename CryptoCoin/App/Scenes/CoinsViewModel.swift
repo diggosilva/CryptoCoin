@@ -15,9 +15,9 @@ enum CoinsViewControllerState {
 
 protocol CoinsViewModelProtocol {
     func numberOfItemsInSection() -> Int
-    func cellForItemAt(indexPath: IndexPath) -> CoinResponse
+    func cellForItemAt(indexPath: IndexPath) -> CoinModel
     func numberOfRowsInSection() -> Int
-    func cellForRowAt(indexPath: IndexPath) -> CoinResponse
+    func cellForRowAt(indexPath: IndexPath) -> CoinModel
     var state: Bindable<CoinsViewControllerState> { get }
     func fetchCoins()
     func fetchCoinsBR()
@@ -30,8 +30,8 @@ class CoinsViewModel: CoinsViewModelProtocol {
     private(set) var state: Bindable<CoinsViewControllerState> = Bindable(value: .loading)
     private(set) var attempt = 0
     private var service: ServiceProtocol = Service()
-    var top10Coins: [CoinResponse] = []
-    var coinsList: [CoinResponse] = []
+    var top10Coins: [CoinModel] = []
+    var coinsList: [CoinModel] = []
     private(set) var isRealCoin = false
     
     // MARK: CollectionView
@@ -39,7 +39,7 @@ class CoinsViewModel: CoinsViewModelProtocol {
         return top10Coins.count
     }
     
-    func cellForItemAt(indexPath: IndexPath) -> CoinResponse {
+    func cellForItemAt(indexPath: IndexPath) -> CoinModel {
         top10Coins[indexPath.item]
     }
     
@@ -48,7 +48,7 @@ class CoinsViewModel: CoinsViewModelProtocol {
         return coinsList.count
     }
     
-    func cellForRowAt(indexPath: IndexPath) -> CoinResponse {
+    func cellForRowAt(indexPath: IndexPath) -> CoinModel {
         coinsList[indexPath.row]
     }
     
@@ -62,10 +62,9 @@ class CoinsViewModel: CoinsViewModelProtocol {
     }
     
     func fetchCoins() {
-        top10Coins = []
-        coinsList = []
+        clearLists()
         isRealCoin = false
-        service.getCoins { coins in
+        service.getCoins(from: APIClient.apiUSA) { coins in
             self.coinsList.append(contentsOf: coins)
             let top10 = self.coinsList.sorted(by: { $0.priceChangePercentage24H > $1.priceChangePercentage24H })
             self.top10Coins.append(contentsOf: top10.prefix(10))
@@ -77,10 +76,9 @@ class CoinsViewModel: CoinsViewModelProtocol {
     }
     
     func fetchCoinsBR() {
-        top10Coins = []
-        coinsList = []
+        clearLists()
         isRealCoin = true
-        service.getCoinsBR { coins in
+        service.getCoins(from: APIClient.apiBRA) { coins in
             self.coinsList.append(contentsOf: coins)
             let top10 = self.coinsList.sorted(by: { $0.priceChangePercentage24H > $1.priceChangePercentage24H })
             self.top10Coins.append(contentsOf: top10.prefix(10))
@@ -89,5 +87,10 @@ class CoinsViewModel: CoinsViewModelProtocol {
             print("DEBUG: Erro ao buscar as criptomoedas.. \(error.localizedDescription)")
             self.state.value = .error
         }
+    }
+    
+    func clearLists() {
+        top10Coins = []
+        coinsList = []
     }
 }
