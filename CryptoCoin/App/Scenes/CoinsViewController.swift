@@ -36,7 +36,7 @@ class CoinsViewController: UIViewController {
             self.viewModel.fetchCoinsBR()
         }
         
-        let menu = UIMenu(title: "Conversão da Moeda para:", options: .singleSelection, children: [dollar, real])
+        let menu = UIMenu(title: "Conversão da Moeda para:".uppercased(), options: .singleSelection, children: [dollar, real])
         let barButtonItem = UIBarButtonItem(image: UIImage(systemName: "dollarsign.circle.fill")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal), menu: menu)
         navigationItem.rightBarButtonItem = barButtonItem
         navigationController?.navigationBar.prefersLargeTitles = true

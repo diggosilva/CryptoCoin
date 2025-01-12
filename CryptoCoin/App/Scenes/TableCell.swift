@@ -73,7 +73,7 @@ class TableCell: UITableViewCell {
         setConstraints()
     }
     
-    func configure(model: CoinResponse) {
+    func configure(model: CoinModel) {
         guard let url = URL(string: model.image) else { return }
         marketCapRankLabel.text = "\(model.marketCapRank)"
         coinImage.sd_setImage(with: url)
@@ -84,7 +84,7 @@ class TableCell: UITableViewCell {
         percentage24HLabel.textColor = model.priceChangePercentage24H > 0 ? .systemGreen : .systemRed
     }
     
-    func configureBR(model: CoinResponse) {
+    func configureBR(model: CoinModel) {
         guard let url = URL(string: model.image) else { return }
         marketCapRankLabel.text = "\(model.marketCapRank)"
         coinImage.sd_setImage(with: url)
