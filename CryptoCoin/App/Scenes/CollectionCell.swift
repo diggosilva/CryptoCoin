@@ -83,19 +83,19 @@ class CollectionCell: UICollectionViewCell {
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            coinImage.topAnchor.constraint(equalTo: topAnchor, constant: 20),
-            coinImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            coinImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            coinImage.centerYAnchor.constraint(equalTo: centerYAnchor),
             coinImage.widthAnchor.constraint(equalToConstant: 35),
             coinImage.heightAnchor.constraint(equalTo: coinImage.widthAnchor),
             
-            symbolLabel.topAnchor.constraint(equalTo: coinImage.bottomAnchor, constant: 20),
-            symbolLabel.leadingAnchor.constraint(equalTo: coinImage.leadingAnchor),
+            symbolLabel.topAnchor.constraint(equalTo: coinImage.topAnchor),
+            symbolLabel.leadingAnchor.constraint(equalTo: coinImage.trailingAnchor, constant: 5),
             
             currentPriceLabel.centerYAnchor.constraint(equalTo: symbolLabel.centerYAnchor),
             currentPriceLabel.leadingAnchor.constraint(equalTo: symbolLabel.trailingAnchor, constant: 5),
             currentPriceLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -10),
             
-            percentage24HLabel.topAnchor.constraint(equalTo: currentPriceLabel.bottomAnchor),
+            percentage24HLabel.bottomAnchor.constraint(equalTo: coinImage.bottomAnchor),
             percentage24HLabel.leadingAnchor.constraint(equalTo: symbolLabel.leadingAnchor),
         ])
     }

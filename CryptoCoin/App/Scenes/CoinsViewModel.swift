@@ -18,10 +18,10 @@ protocol CoinsViewModelProtocol {
     func cellForItemAt(indexPath: IndexPath) -> CoinModel
     func numberOfRowsInSection() -> Int
     func cellForRowAt(indexPath: IndexPath) -> CoinModel
-    var state: Bindable<CoinsViewControllerState> { get }
     func fetchCoins()
     func fetchCoinsBR()
     func attempts() -> Int
+    var state: Bindable<CoinsViewControllerState> { get }
     var attempt: Int { get }
     var isRealCoin: Bool { get }
 }
@@ -68,6 +68,7 @@ class CoinsViewModel: CoinsViewModelProtocol {
             self.coinsList.append(contentsOf: coins)
             let top10 = self.coinsList.sorted(by: { $0.priceChangePercentage24H > $1.priceChangePercentage24H })
             self.top10Coins.append(contentsOf: top10.prefix(10))
+            
             self.state.value = .loaded
         } onError: { error in
             print("DEBUG: Erro ao buscar as criptomoedas.. \(error.localizedDescription)")
@@ -82,6 +83,7 @@ class CoinsViewModel: CoinsViewModelProtocol {
             self.coinsList.append(contentsOf: coins)
             let top10 = self.coinsList.sorted(by: { $0.priceChangePercentage24H > $1.priceChangePercentage24H })
             self.top10Coins.append(contentsOf: top10.prefix(10))
+            
             self.state.value = .loaded
         } onError: { error in
             print("DEBUG: Erro ao buscar as criptomoedas.. \(error.localizedDescription)")
@@ -89,7 +91,7 @@ class CoinsViewModel: CoinsViewModelProtocol {
         }
     }
     
-    func clearLists() {
+    private func clearLists() {
         top10Coins = []
         coinsList = []
     }

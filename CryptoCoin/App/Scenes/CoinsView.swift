@@ -20,7 +20,7 @@ class CoinView: UIView {
         var layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 15
-        layout.itemSize = CGSize(width: 140, height: 140)
+        layout.itemSize = CGSize(width: 140, height: 70)
         layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -109,10 +109,10 @@ class CoinView: UIView {
             top10Label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             top10Label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
             
-            collectionView.topAnchor.constraint(equalTo: top10Label.bottomAnchor, constant: 20),
+            collectionView.topAnchor.constraint(equalTo: top10Label.bottomAnchor, constant: 10),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            collectionView.heightAnchor.constraint(equalToConstant: 170),
+            collectionView.heightAnchor.constraint(equalToConstant: 100),
             
             divider.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 20),
             divider.leadingAnchor.constraint(equalTo: leadingAnchor),

@@ -68,7 +68,7 @@ class CoinsViewController: UIViewController {
     }
     
     private func showLoadedState() {
-        coinView.top10Label.text = "Top \(viewModel.numberOfItemsInSection()) Principais Impulsionadores"
+        coinView.top10Label.text = "Top \(viewModel.numberOfItemsInSection()) Maiores variações"
         coinView.collectionView.reloadData()
         coinView.tableview.reloadData()
         coinView.spinner.stopAnimating()

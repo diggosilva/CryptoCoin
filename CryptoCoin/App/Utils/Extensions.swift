@@ -21,7 +21,7 @@ func configCellForCollection(_ cell: UIView) {
     cell.layer.shadowOffset = CGSize(width: 5, height: 5)
     cell.layer.shadowOpacity = 0.3
     cell.layer.shadowRadius = 5
-    cell.layer.cornerRadius = 20
+    cell.layer.cornerRadius = 10
 }
 
 func formatCurrencyUS(_ value: Double) -> String {
