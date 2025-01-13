@@ -114,7 +114,7 @@ extension CoinsViewController: UISearchBarDelegate {
         searchBar.resignFirstResponder()
     }
 }
-Refactored files to work with the new custom object that was created
+
 extension CoinsViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numberOfItemsInSection()
