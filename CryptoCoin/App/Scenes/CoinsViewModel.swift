@@ -14,13 +14,14 @@ enum CoinsViewControllerState {
 }
 
 protocol CoinsViewModelProtocol {
+    func searchBar(textDidChange searchText: String)
     func numberOfItemsInSection() -> Int
     func cellForItemAt(indexPath: IndexPath) -> CoinModel
     func numberOfRowsInSection() -> Int
     func cellForRowAt(indexPath: IndexPath) -> CoinModel
+    func attempts() -> Int
     func fetchCoins()
     func fetchCoinsBR()
-    func attempts() -> Int
     var state: Bindable<CoinsViewControllerState> { get }
     var attempt: Int { get }
     var isRealCoin: Bool { get }
@@ -32,7 +33,47 @@ class CoinsViewModel: CoinsViewModelProtocol {
     private var service: ServiceProtocol = Service()
     var top10Coins: [CoinModel] = []
     var coinsList: [CoinModel] = []
+    var filteredCoinsList: [CoinModel] = []
     private(set) var isRealCoin = false
+    
+    func searchBar(textDidChange searchText: String) {
+        filteredCoinsList = []
+        
+        if searchText.isEmpty {
+            filteredCoinsList = coinsList
+        }
+        
+        if searchText.hasPrefix("+") {
+            for coin in coinsList {
+                if coin.priceChangePercentage24H > 0 {
+                    filteredCoinsList.append(coin)
+                }
+            }
+            sortedList()
+            return
+        }
+        
+        if searchText.hasPrefix("-") {
+            for coin in coinsList {
+                if coin.priceChangePercentage24H < 0 {
+                    filteredCoinsList.append(coin)
+                }
+            }
+            sortedList()
+            return
+        }
+        
+        for coin in coinsList {
+            if coin.name.uppercased().contains(searchText.uppercased()) {
+                filteredCoinsList.append(coin)
+            } else if coin.symbol.uppercased().contains(searchText.uppercased()) {
+                filteredCoinsList.append(coin)
+            } else if String(coin.priceChangePercentage24H).uppercased().contains(searchText.uppercased()) {
+                filteredCoinsList.append(coin)
+            }
+            sortedList()
+        }
+    }
     
     // MARK: CollectionView
     func numberOfItemsInSection() -> Int {
@@ -45,11 +86,11 @@ class CoinsViewModel: CoinsViewModelProtocol {
     
     // MARK: TableView
     func numberOfRowsInSection() -> Int {
-        return coinsList.count
+        return filteredCoinsList.count
     }
     
     func cellForRowAt(indexPath: IndexPath) -> CoinModel {
-        coinsList[indexPath.row]
+        filteredCoinsList[indexPath.row]
     }
     
     func attempts() -> Int {
@@ -66,8 +107,14 @@ class CoinsViewModel: CoinsViewModelProtocol {
         isRealCoin = false
         service.getCoins(from: APIClient.apiUSA) { coins in
             self.coinsList.append(contentsOf: coins)
+            self.filteredCoinsList = self.coinsList
+            
             let top10 = self.coinsList.sorted(by: { $0.priceChangePercentage24H > $1.priceChangePercentage24H })
             self.top10Coins.append(contentsOf: top10.prefix(10))
+            
+            self.coinsList = self.coinsList.sorted { (coin1, coin2) -> Bool in
+                return coin1.marketCapRank > coin2.marketCapRank
+            }
             
             self.state.value = .loaded
         } onError: { error in
@@ -81,8 +128,14 @@ class CoinsViewModel: CoinsViewModelProtocol {
         isRealCoin = true
         service.getCoins(from: APIClient.apiBRA) { coins in
             self.coinsList.append(contentsOf: coins)
+            self.filteredCoinsList = self.coinsList
+            
             let top10 = self.coinsList.sorted(by: { $0.priceChangePercentage24H > $1.priceChangePercentage24H })
             self.top10Coins.append(contentsOf: top10.prefix(10))
+            
+            self.coinsList = self.coinsList.sorted { (coin1, coin2) -> Bool in
+                return coin1.marketCapRank > coin2.marketCapRank
+            }
             
             self.state.value = .loaded
         } onError: { error in
@@ -94,5 +147,11 @@ class CoinsViewModel: CoinsViewModelProtocol {
     private func clearLists() {
         top10Coins = []
         coinsList = []
+    }
+    
+    private func sortedList() {
+        self.filteredCoinsList = self.filteredCoinsList.sorted { (coin1, coin2) -> Bool in
+            return coin1.marketCapRank < coin2.marketCapRank
+        }
     }
 }
