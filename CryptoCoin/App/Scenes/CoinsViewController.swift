@@ -25,14 +25,20 @@ class CoinsViewController: UIViewController {
         viewModel.fetchCoins()
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+    
     private func setNavBar() {
         let dollar = UIAction(title: "Dólar", image: UIImage(systemName: "dollarsign.circle.fill")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)) { action in
             self.navigationItem.rightBarButtonItem?.image = UIImage(systemName: "dollarsign.circle.fill")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
+            self.coinView.searchBar.text = ""
             self.viewModel.fetchCoins()
         }
         
         let real = UIAction(title: "Real", image: UIImage(systemName: "brazilianrealsign.circle.fill")?.withTintColor(.systemGreen, renderingMode: .alwaysOriginal)) { action in
             self.navigationItem.rightBarButtonItem?.image = UIImage(systemName: "brazilianrealsign.circle.fill")?.withTintColor(.systemGreen, renderingMode: .alwaysOriginal)
+            self.coinView.searchBar.text = ""
             self.viewModel.fetchCoinsBR()
         }
         
@@ -44,6 +50,7 @@ class CoinsViewController: UIViewController {
     }
     
     private func setDelegatesAndDataSources() {
+        coinView.searchBar.delegate = self
         coinView.collectionView.delegate = self
         coinView.collectionView.dataSource = self
         coinView.tableview.delegate = self
@@ -94,6 +101,17 @@ class CoinsViewController: UIViewController {
         let ok = UIAlertAction(title: "Entendi", style: .cancel, handler: nil)
         alert.addAction(ok)
         present(alert, animated: true)
+    }
+}
+
+extension CoinsViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.searchBar(textDidChange: searchText)
+        coinView.tableview.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
 }
 

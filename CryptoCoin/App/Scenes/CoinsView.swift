@@ -8,6 +8,17 @@
 import UIKit
 
 class CoinView: UIView {
+    lazy var searchBar: UISearchBar = {
+        let sb = UISearchBar()
+        sb.translatesAutoresizingMaskIntoConstraints = false
+        sb.placeholder = "Buscar moedas..."
+        sb.searchBarStyle = .minimal
+        sb.autocorrectionType = .no
+        sb.enablesReturnKeyAutomatically = true
+        sb.enablesReturnKeyAutomatically = true
+        return sb
+    }()
+    
     // MARK: COLLECTIONVIEW
     lazy var top10Label: UILabel = {
         let lbl = UILabel()
@@ -100,12 +111,18 @@ class CoinView: UIView {
     
     private func setHierarchy() {
         backgroundColor = .systemBackground
-        addSubviews([top10Label, collectionView, divider, allCoinsLabel, coinLabel, priceLabel, tableview, spinner])
+        addSubviews([searchBar, top10Label, collectionView, divider, allCoinsLabel, coinLabel, priceLabel, tableview, spinner])
     }
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            top10Label.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            searchBar.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            searchBar.leadingAnchor.constraint(equalTo: leadingAnchor),
+            searchBar.trailingAnchor.constraint(equalTo: trailingAnchor),
+        ])
+        
+        NSLayoutConstraint.activate([
+            top10Label.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
             top10Label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             top10Label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
             
@@ -118,7 +135,7 @@ class CoinView: UIView {
             divider.leadingAnchor.constraint(equalTo: leadingAnchor),
             divider.trailingAnchor.constraint(equalTo: trailingAnchor),
             divider.heightAnchor.constraint(equalToConstant: 0.4),
-            ])
+        ])
         
         NSLayoutConstraint.activate([
             allCoinsLabel.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 10),

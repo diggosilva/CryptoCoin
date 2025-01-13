@@ -61,20 +61,38 @@ class CollectionCell: UICollectionViewCell {
         setConstraints()
     }
     
+    private func setAlphaValue(alpha: CGFloat) {
+        coinImage.alpha = alpha
+        symbolLabel.alpha = alpha
+        currentPriceLabel.alpha = alpha
+        percentage24HLabel.alpha = alpha
+    }
+    
     func configure(model: CoinModel) {
-        guard let url = URL(string: model.image) else { return }
-        coinImage.sd_setImage(with: url)
-        symbolLabel.text = model.symbol.uppercased()
-        currentPriceLabel.text = formatCurrencyUS(model.currentPrice)
-        percentage24HLabel.text = "\(String(format: "%.2f", model.priceChangePercentage24H))%"
+        setAlphaValue(alpha: 0)
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.25) {
+                self.setupCell(model: model, currency: formatCurrencyUS(model.currentPrice))
+            }
+        }
     }
     
     func configureBR(model: CoinModel) {
+        setAlphaValue(alpha: 0)
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.25) {
+                self.setupCell(model: model, currency: formatCurrencyBR(model.currentPrice))
+            }
+        }
+    }
+    
+    private func setupCell(model: CoinModel, currency: String) {
         guard let url = URL(string: model.image) else { return }
-        coinImage.sd_setImage(with: url)
-        symbolLabel.text = model.symbol.uppercased()
-        currentPriceLabel.text = formatCurrencyBR(model.currentPrice)
-        percentage24HLabel.text = "\(String(format: "%.2f", model.priceChangePercentage24H))%"
+        self.coinImage.sd_setImage(with: url)
+        self.symbolLabel.text = model.symbol.uppercased()
+        self.currentPriceLabel.text = currency
+        self.percentage24HLabel.text = "\(String(format: "%.2f", model.priceChangePercentage24H))%"
+        self.setAlphaValue(alpha: 1)
     }
     
     private func setHierarchy() {

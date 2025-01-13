@@ -73,26 +73,38 @@ class TableCell: UITableViewCell {
         setConstraints()
     }
     
+    private func setAlphaValue(alpha: CGFloat) {
+        coinImage.alpha = alpha
+        nameLabel.alpha = alpha
+        symbolLabel.alpha = alpha
+        currentPriceLabel.alpha = alpha
+        percentage24HLabel.alpha = alpha
+    }
+    
     func configure(model: CoinModel) {
-        guard let url = URL(string: model.image) else { return }
-        marketCapRankLabel.text = "\(model.marketCapRank)"
-        coinImage.sd_setImage(with: url)
-        nameLabel.text = model.name
-        symbolLabel.text = model.symbol.uppercased()
-        currentPriceLabel.text = formatCurrencyUS(model.currentPrice)
-        percentage24HLabel.text = "\(String(format: "%.2f", model.priceChangePercentage24H))%"
-        percentage24HLabel.textColor = model.priceChangePercentage24H > 0 ? .systemGreen : .systemRed
+        setAlphaValue(alpha: 0)
+        UIView.animate(withDuration: 0.25) {
+            self.setupCell(model: model, currency: formatCurrencyUS(model.currentPrice))
+        }
     }
     
     func configureBR(model: CoinModel) {
+        setAlphaValue(alpha: 0)
+        UIView.animate(withDuration: 0.25) {
+            self.setupCell(model: model, currency: formatCurrencyBR(model.currentPrice))
+        }
+    }
+    
+    private func setupCell(model: CoinModel, currency: String) {
         guard let url = URL(string: model.image) else { return }
-        marketCapRankLabel.text = "\(model.marketCapRank)"
-        coinImage.sd_setImage(with: url)
-        nameLabel.text = model.name
-        symbolLabel.text = model.symbol.uppercased()
-        currentPriceLabel.text = formatCurrencyBR(model.currentPrice)
-        percentage24HLabel.text = "\(String(format: "%.2f", model.priceChangePercentage24H))%"
-        percentage24HLabel.textColor = model.priceChangePercentage24H > 0 ? .systemGreen : .systemRed
+        self.marketCapRankLabel.text = "\(model.marketCapRank)"
+        self.coinImage.sd_setImage(with: url)
+        self.nameLabel.text = model.name
+        self.symbolLabel.text = model.symbol.uppercased()
+        self.currentPriceLabel.text = currency
+        self.percentage24HLabel.text = "\(String(format: "%.2f", model.priceChangePercentage24H))%"
+        self.percentage24HLabel.textColor = model.priceChangePercentage24H > 0 ? .systemGreen : .systemRed
+        self.setAlphaValue(alpha: 1)
     }
     
     private func setHierarchy() {
