@@ -22,7 +22,7 @@ class CoinsViewController: UIViewController {
         setNavBar()
         setDelegatesAndDataSources()
         handleStates()
-        viewModel.fetchCoins()
+        viewModel.loadDataCoinsUS()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -33,13 +33,13 @@ class CoinsViewController: UIViewController {
         let dollar = UIAction(title: "Dólar", image: UIImage(systemName: "dollarsign.circle.fill")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)) { action in
             self.navigationItem.rightBarButtonItem?.image = UIImage(systemName: "dollarsign.circle.fill")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
             self.coinView.searchBar.text = ""
-            self.viewModel.fetchCoins()
+            self.viewModel.loadDataCoinsUS()
         }
         
         let real = UIAction(title: "Real", image: UIImage(systemName: "brazilianrealsign.circle.fill")?.withTintColor(.systemGreen, renderingMode: .alwaysOriginal)) { action in
             self.navigationItem.rightBarButtonItem?.image = UIImage(systemName: "brazilianrealsign.circle.fill")?.withTintColor(.systemGreen, renderingMode: .alwaysOriginal)
             self.coinView.searchBar.text = ""
-            self.viewModel.fetchCoinsBR()
+            self.viewModel.loadDataCoinsBR()
         }
         
         let menu = UIMenu(title: "Conversão da Moeda para:".uppercased(), options: .singleSelection, children: [dollar, real])
@@ -89,7 +89,7 @@ class CoinsViewController: UIViewController {
     func alertError(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let ok = UIAlertAction(title: "Sim", style: .default) { action in
-            self.viewModel.fetchCoins()
+            self.viewModel.loadDataCoinsUS()
         }
         alert.addAction(ok)
         alert.addAction(UIAlertAction(title: "Não", style: .cancel, handler: nil))

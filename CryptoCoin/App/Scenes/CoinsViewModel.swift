@@ -20,8 +20,8 @@ protocol CoinsViewModelProtocol {
     func numberOfRowsInSection() -> Int
     func cellForRowAt(indexPath: IndexPath) -> CoinModel
     func attempts() -> Int
-    func fetchCoins()
-    func fetchCoinsBR()
+    func loadDataCoinsUS()
+    func loadDataCoinsBR()
     var state: Bindable<CoinsViewControllerState> { get }
     var attempt: Int { get }
     var isRealCoin: Bool { get }
@@ -30,11 +30,15 @@ protocol CoinsViewModelProtocol {
 class CoinsViewModel: CoinsViewModelProtocol {
     private(set) var state: Bindable<CoinsViewControllerState> = Bindable(value: .loading)
     private(set) var attempt = 0
-    private var service: ServiceProtocol = Service()
+    private var service: ServiceProtocol
     var top10Coins: [CoinModel] = []
     var coinsList: [CoinModel] = []
     var filteredCoinsList: [CoinModel] = []
     private(set) var isRealCoin = false
+    
+    init(serviceProtocol: ServiceProtocol = Service() ) {
+        self.service = serviceProtocol
+    }
     
     func searchBar(textDidChange searchText: String) {
         filteredCoinsList = []
@@ -102,7 +106,7 @@ class CoinsViewModel: CoinsViewModelProtocol {
         return attempt
     }
     
-    func fetchCoins() {
+    func loadDataCoinsUS() {
         clearLists()
         isRealCoin = false
         service.getCoins(from: APIClient.apiUSA) { coins in
@@ -123,7 +127,7 @@ class CoinsViewModel: CoinsViewModelProtocol {
         }
     }
     
-    func fetchCoinsBR() {
+    func loadDataCoinsBR() {
         clearLists()
         isRealCoin = true
         service.getCoins(from: APIClient.apiBRA) { coins in
