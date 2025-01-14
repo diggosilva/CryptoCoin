@@ -7,7 +7,7 @@
 
 import Foundation
 
-class CoinModel: Codable {
+class CoinModel: Codable, Equatable {
     let marketCapRank: Int
     let image: String
     let name: String
@@ -22,5 +22,14 @@ class CoinModel: Codable {
         self.symbol = symbol
         self.currentPrice = currentPrice
         self.priceChangePercentage24H = priceChangePercentage24H
+    }
+    
+    static func == (lhs: CoinModel, rhs: CoinModel) -> Bool {
+        return lhs.marketCapRank == rhs.marketCapRank &&
+               lhs.image == rhs.image &&
+               lhs.name == rhs.name &&
+               lhs.symbol == rhs.symbol &&
+               lhs.currentPrice == rhs.currentPrice &&
+               lhs.priceChangePercentage24H == rhs.priceChangePercentage24H
     }
 }
