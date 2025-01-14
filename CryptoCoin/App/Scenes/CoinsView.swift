@@ -95,6 +95,16 @@ class CoinView: UIView {
         return spinner
     }()
     
+    lazy var loadingLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        lbl.text = "Carregando..."
+        lbl.font = .preferredFont(forTextStyle: .subheadline)
+        lbl.font = .systemFont(ofSize: 14, weight: .semibold)
+        lbl.textColor = .secondaryLabel
+        return lbl
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupView()
@@ -111,7 +121,7 @@ class CoinView: UIView {
     
     private func setHierarchy() {
         backgroundColor = .systemBackground
-        addSubviews([searchBar, top10Label, collectionView, divider, allCoinsLabel, coinLabel, priceLabel, tableview, spinner])
+        addSubviews([searchBar, top10Label, collectionView, divider, allCoinsLabel, coinLabel, priceLabel, tableview, spinner, loadingLabel])
     }
     
     private func setConstraints() {
@@ -154,6 +164,9 @@ class CoinView: UIView {
             
             spinner.centerXAnchor.constraint(equalTo: centerXAnchor),
             spinner.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
+            loadingLabel.centerXAnchor.constraint(equalTo: spinner.centerXAnchor),
+            loadingLabel.topAnchor.constraint(equalTo: spinner.bottomAnchor),
         ])
     }
 }
