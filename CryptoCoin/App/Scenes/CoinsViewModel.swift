@@ -30,13 +30,13 @@ protocol CoinsViewModelProtocol {
 class CoinsViewModel: CoinsViewModelProtocol {
     private(set) var state: Bindable<CoinsViewControllerState> = Bindable(value: .loading)
     private(set) var attempt = 0
+    private(set) var isRealCoin = false
     private var service: ServiceProtocol
     var top10Coins: [CoinModel] = []
     var coinsList: [CoinModel] = []
     var filteredCoinsList: [CoinModel] = []
-    private(set) var isRealCoin = false
     
-    init(serviceProtocol: ServiceProtocol = Service() ) {
+    init(serviceProtocol: ServiceProtocol = Service()) {
         self.service = serviceProtocol
     }
     
