@@ -79,6 +79,7 @@ class CoinsViewController: UIViewController {
         coinView.collectionView.reloadData()
         coinView.tableview.reloadData()
         coinView.spinner.stopAnimating()
+        coinView.loadingLabel.isHidden = true
     }
     
     private func showErrorState() {

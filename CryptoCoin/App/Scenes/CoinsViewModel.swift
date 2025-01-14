@@ -45,35 +45,15 @@ class CoinsViewModel: CoinsViewModelProtocol {
         
         if searchText.isEmpty {
             filteredCoinsList = coinsList
-        }
-        
-        if searchText.hasPrefix("+") {
-            for coin in coinsList {
-                if coin.priceChangePercentage24H > 0 {
-                    filteredCoinsList.append(coin)
-                }
+        } else if searchText.hasPrefix("+") {
+            filteredCoinsList = coinsList.filter { $0.priceChangePercentage24H > 0 }
+        } else if searchText.hasPrefix("-") {
+            filteredCoinsList = coinsList.filter { $0.priceChangePercentage24H < 0 }
+        } else {
+            filteredCoinsList = coinsList.filter { coin in
+                coin.name.uppercased().contains(searchText.uppercased()) ||
+                coin.symbol.uppercased().contains(searchText.uppercased())
             }
-            sortedList()
-            return
-        }
-        
-        if searchText.hasPrefix("-") {
-            for coin in coinsList {
-                if coin.priceChangePercentage24H < 0 {
-                    filteredCoinsList.append(coin)
-                }
-            }
-            sortedList()
-            return
-        }
-        
-        for coin in coinsList {
-            if coin.name.uppercased().contains(searchText.uppercased()) {
-                filteredCoinsList.append(coin)
-            } else if coin.symbol.uppercased().contains(searchText.uppercased()) {
-                filteredCoinsList.append(coin)
-            }
-            sortedList()
         }
     }
     
@@ -96,49 +76,28 @@ class CoinsViewModel: CoinsViewModelProtocol {
     }
     
     func attempts() -> Int {
-        if state.value == .error {
-            attempt += 1
-        } else {
-            attempt = 0
-        }
+        attempt = state.value == .error ? attempt + 1 : 0
         return attempt
     }
     
     func loadDataCoinsUS() {
-        clearLists()
-        isRealCoin = false
-        service.getCoins(from: APIClient.apiUSA) { coins in
-            self.coinsList.append(contentsOf: coins)
-            self.filteredCoinsList = self.coinsList
-            
-            let top10 = self.coinsList.sorted(by: { $0.priceChangePercentage24H > $1.priceChangePercentage24H })
-            self.top10Coins.append(contentsOf: top10.prefix(10))
-            
-            self.coinsList = self.coinsList.sorted { (coin1, coin2) -> Bool in
-                return coin1.marketCapRank > coin2.marketCapRank
-            }
-            
-            self.state.value = .loaded
-        } onError: { error in
-            print("DEBUG: Erro ao buscar as criptomoedas.. \(error.localizedDescription)")
-            self.state.value = .error
-        }
+        loadDataCoins(from: APIClient.apiUSA, isRealCoin: false)
     }
     
     func loadDataCoinsBR() {
+        loadDataCoins(from: APIClient.apiBRA, isRealCoin: true)
+    }
+    
+    func loadDataCoins(from url: String, isRealCoin: Bool) {
         clearLists()
-        isRealCoin = true
-        service.getCoins(from: APIClient.apiBRA) { coins in
+        self.isRealCoin = isRealCoin
+        service.getCoins(from: url) { coins in
             self.coinsList.append(contentsOf: coins)
             self.filteredCoinsList = self.coinsList
             
             let top10 = self.coinsList.sorted(by: { $0.priceChangePercentage24H > $1.priceChangePercentage24H })
             self.top10Coins.append(contentsOf: top10.prefix(10))
-            
-            self.coinsList = self.coinsList.sorted { (coin1, coin2) -> Bool in
-                return coin1.marketCapRank > coin2.marketCapRank
-            }
-            
+            self.coinsList = self.coinsList.sorted { $0.marketCapRank < $1.marketCapRank }
             self.state.value = .loaded
         } onError: { error in
             print("DEBUG: Erro ao buscar as criptomoedas.. \(error.localizedDescription)")
@@ -149,11 +108,5 @@ class CoinsViewModel: CoinsViewModelProtocol {
     private func clearLists() {
         top10Coins = []
         coinsList = []
-    }
-    
-    private func sortedList() {
-        self.filteredCoinsList = self.filteredCoinsList.sorted { (coin1, coin2) -> Bool in
-            return coin1.marketCapRank < coin2.marketCapRank
-        }
     }
 }
