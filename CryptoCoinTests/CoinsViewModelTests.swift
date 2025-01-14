@@ -54,7 +54,7 @@ final class CryptoCoinTests: XCTestCase {
         XCTAssertTrue(sut.filteredCoinsList != [])
     }
     
-    func testWhenError() {
+    func testWhenFailure() {
         let sut: CoinsViewModel = CoinsViewModel(serviceProtocol: mockFailure())
         sut.state.bind { state in
             XCTAssertTrue(state == .error)
