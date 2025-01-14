@@ -72,8 +72,6 @@ class CoinsViewModel: CoinsViewModelProtocol {
                 filteredCoinsList.append(coin)
             } else if coin.symbol.uppercased().contains(searchText.uppercased()) {
                 filteredCoinsList.append(coin)
-            } else if String(coin.priceChangePercentage24H).uppercased().contains(searchText.uppercased()) {
-                filteredCoinsList.append(coin)
             }
             sortedList()
         }
