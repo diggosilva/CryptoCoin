@@ -53,7 +53,7 @@ After cloning, do the following:
 
 ```sh
 $ cd <diretorio-base>/CryptoCoin/
-$ open CryptoCoin.xcodeproj/
+$ open CryptoCoin.xcworkspace/
 ```
 
 ## Built With

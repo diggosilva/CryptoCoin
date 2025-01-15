@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>ApiUrlBR</key>
+	<string>$(API_URL_BR)</string>
+	<key>ApiUrlUS</key>
+	<string>$(API_URL_US)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -19,9 +23,5 @@
 			</array>
 		</dict>
 	</dict>
-	<key>ApiUrlUS</key>
-	<string>$(API_URL_US)</string>
-	<key>ApiUrlBR</key>
-	<string>$(API_URL_BR)</string>
 </dict>
 </plist>
