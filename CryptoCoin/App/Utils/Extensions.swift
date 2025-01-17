@@ -13,6 +13,16 @@ extension UIView {
     }
 }
 
+extension Bundle {
+    var apiUSA: String? {
+        return self.object(forInfoDictionaryKey: "ApiUrlUS") as? String
+    }
+    
+    var apiBRA: String? {
+        return self.object(forInfoDictionaryKey: "ApiUrlBR") as? String
+    }
+}
+
 func configCellForCollection(_ cell: UIView) {
     cell.backgroundColor = .systemBackground
     cell.layer.borderWidth = 1

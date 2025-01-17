@@ -99,7 +99,10 @@ class CoinsViewController: UIViewController {
     
     func alertFinal(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let ok = UIAlertAction(title: "Entendi", style: .cancel, handler: nil)
+        let ok = UIAlertAction(title: "Entendi", style: .cancel) { action in
+            self.coinView.spinner.stopAnimating()
+            self.coinView.loadingLabel.isHidden = true
+        }
         alert.addAction(ok)
         present(alert, animated: true)
     }

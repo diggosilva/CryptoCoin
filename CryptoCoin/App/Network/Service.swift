@@ -8,14 +8,22 @@
 import Foundation
 
 protocol ServiceProtocol {
-    func getCoins(from url: String, onSuccess: @escaping ([CoinModel]) -> Void, onError: @escaping (any Error) -> Void)
+    func getCoins(from url: ApiEnvironment, onSuccess: @escaping ([CoinModel]) -> Void, onError: @escaping (any Error) -> Void)
 }
 
 final class Service: ServiceProtocol {
     private var dataTask: URLSessionDataTask?
+    
+    func getCoins(from url: ApiEnvironment, onSuccess: @escaping ([CoinModel]) -> Void, onError: @escaping (any Error) -> Void) {
+        let apiUrlString: String? = switch url {
+        case .apiBRA: Bundle.main.object(forInfoDictionaryKey: "ApiUrlBR") as? String
+        case .apiUSA: Bundle.main.object(forInfoDictionaryKey: "ApiUrlUS") as? String
+        }
         
-    func getCoins(from url: String, onSuccess: @escaping ([CoinModel]) -> Void, onError: @escaping (any Error) -> Void) {
-        guard let url = URL(string: url) else { return }
+        guard let url = URL(string: apiUrlString ?? "") else {
+            onError(NSError(domain: "ServiceError", code: 0, userInfo: [NSLocalizedDescriptionKey: "URL inválida."]))
+            return
+        }
         
         dataTask = URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
             DispatchQueue.main.async {

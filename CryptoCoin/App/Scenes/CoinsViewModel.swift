@@ -13,6 +13,11 @@ enum CoinsViewControllerState {
     case error
 }
 
+enum ApiEnvironment {
+    case apiBRA
+    case apiUSA
+}
+
 protocol CoinsViewModelProtocol {
     func searchBar(textDidChange searchText: String)
     func numberOfItemsInSection() -> Int
@@ -81,14 +86,14 @@ class CoinsViewModel: CoinsViewModelProtocol {
     }
     
     func loadDataCoinsUS() {
-        loadDataCoins(from: APIClient.apiUSA, isRealCoin: false)
+        loadDataCoins(from: ApiEnvironment.apiUSA, isRealCoin: false)
     }
     
     func loadDataCoinsBR() {
-        loadDataCoins(from: APIClient.apiBRA, isRealCoin: true)
+        loadDataCoins(from: ApiEnvironment.apiBRA, isRealCoin: true)
     }
     
-    func loadDataCoins(from url: String, isRealCoin: Bool) {
+    func loadDataCoins(from url: ApiEnvironment, isRealCoin: Bool) {
         clearLists()
         self.isRealCoin = isRealCoin
         service.getCoins(from: url) { coins in
