@@ -11,14 +11,15 @@
 
 App written in Swift, provides information about cryptocurrencies, using API. App for study only.
 
-![CryptoCoin Demo](https://github.com/user-attachments/assets/d3ef9638-0f68-47bf-952e-f583639c306a)
+| Demo | Light | Dark |
+| --- | --- | --- |
+| ![Demo](https://github.com/user-attachments/assets/dd2bed71-106b-4f47-9af8-b025df96e7f4) | ![Light](https://github.com/user-attachments/assets/5a343de8-ce1e-414b-953e-e0669f669237) | ![Dark](https://github.com/user-attachments/assets/1109a21a-a3e4-4385-9192-eb9c43df46ae) |
 
 ## Contents
 
 - [Requirements](#requirements)
 - [Functionalities](#functionalities)
 - [Setup](#setup)
-- [Credits](#credits)
 
 ## Features
 
@@ -28,6 +29,8 @@ App written in Swift, provides information about cryptocurrencies, using API. Ap
 - MVVM
 - View Code (UIKit)
 - Custom elements
+- Light Mode
+- Dark Mode
 
 ## Requirements
 
@@ -43,7 +46,7 @@ App written in Swift, provides information about cryptocurrencies, using API. Ap
 
 ## Setup
 
-First of all download and install Xcode, Swift Package Manager and then clone the repository:
+First of all download and install Xcode and then clone the repository:
 
 ```sh
 $ git@github.com:diggosilva/CryptoCoin.git
