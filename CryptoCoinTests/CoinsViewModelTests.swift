@@ -8,8 +8,8 @@
 import XCTest
 @testable import CryptoCoin
 
-class mockSuccess: ServiceProtocol {
-    func getCoins(from url: String, onSuccess: @escaping ([CoinModel]) -> Void, onError: @escaping (Error) -> Void) {
+class MockSuccess: ServiceProtocol {
+    func getCoins(from url: ApiEnvironment, onSuccess: @escaping([CoinModel]) -> Void, onError: @escaping(Error) -> Void) {
         onSuccess([
             CoinModel(marketCapRank: 1, image: "", name: "DiggoCoin", symbol: "DSC", currentPrice: 0, priceChangePercentage24H: 0),
             CoinModel(marketCapRank: 2, image: "", name: "HelioCoin", symbol: "HMC", currentPrice: 0, priceChangePercentage24H: 0),
@@ -27,8 +27,8 @@ class mockSuccess: ServiceProtocol {
     }
 }
 
-class mockFailure: ServiceProtocol {
-    func getCoins(from url: String, onSuccess: @escaping ([CoinModel]) -> Void, onError: @escaping (Error) -> Void) {
+class MockFailure: ServiceProtocol {
+    func getCoins(from url: ApiEnvironment, onSuccess: @escaping([CoinModel]) -> Void, onError: @escaping(Error) -> Void) {
         onError(NSError(domain: "Error", code: 0))
     }
 }
@@ -40,7 +40,7 @@ final class CryptoCoinTests: XCTestCase {
     }
     
     func testWhenSuccess() {
-        let sut: CoinsViewModel = CoinsViewModel(serviceProtocol: mockSuccess())
+        let sut: CoinsViewModel = CoinsViewModel(serviceProtocol: MockSuccess())
         sut.state.bind { state in
             XCTAssertTrue(state == .loaded)
         }
@@ -55,7 +55,7 @@ final class CryptoCoinTests: XCTestCase {
     }
     
     func testWhenFailure() {
-        let sut: CoinsViewModel = CoinsViewModel(serviceProtocol: mockFailure())
+        let sut: CoinsViewModel = CoinsViewModel(serviceProtocol: MockFailure())
         sut.state.bind { state in
             XCTAssertTrue(state == .error)
         }

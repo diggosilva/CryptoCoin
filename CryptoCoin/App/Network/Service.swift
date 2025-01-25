@@ -8,13 +8,13 @@
 import Foundation
 
 protocol ServiceProtocol {
-    func getCoins(from url: ApiEnvironment, onSuccess: @escaping ([CoinModel]) -> Void, onError: @escaping (any Error) -> Void)
+    func getCoins(from url: ApiEnvironment, onSuccess: @escaping([CoinModel]) -> Void, onError: @escaping(Error) -> Void)
 }
 
 final class Service: ServiceProtocol {
     private var dataTask: URLSessionDataTask?
     
-    func getCoins(from url: ApiEnvironment, onSuccess: @escaping ([CoinModel]) -> Void, onError: @escaping (any Error) -> Void) {
+    func getCoins(from url: ApiEnvironment, onSuccess: @escaping([CoinModel]) -> Void, onError: @escaping(Error) -> Void) {
         let apiUrlString: String? = switch url {
         case .apiBRA: Bundle.main.object(forInfoDictionaryKey: "ApiUrlBR") as? String
         case .apiUSA: Bundle.main.object(forInfoDictionaryKey: "ApiUrlUS") as? String
