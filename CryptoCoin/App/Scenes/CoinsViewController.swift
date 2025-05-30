@@ -71,15 +71,14 @@ class CoinsViewController: UIViewController {
     }
     
     private func showLoadingState() {
-        coinView.removeFromSuperview()
+        coinView.setLoadingState()
     }
     
     private func showLoadedState() {
         coinView.top10Label.text = "Top \(viewModel.numberOfItemsInSection()) Maiores variações"
+        coinView.setLoadedState()
         coinView.collectionView.reloadData()
         coinView.tableview.reloadData()
-        coinView.spinner.stopAnimating()
-        coinView.loadingLabel.isHidden = true
     }
     
     private func showErrorState() {

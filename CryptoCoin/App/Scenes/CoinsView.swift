@@ -110,8 +110,20 @@ class CoinView: UIView {
         setupView()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    
+    func setLoadingState() {
+        spinner.startAnimating()
+        loadingLabel.isHidden = false
+        collectionView.isHidden = true
+        tableview.isHidden = true
+    }
+    
+    func setLoadedState() {
+        spinner.stopAnimating()
+        loadingLabel.isHidden = true
+        collectionView.isHidden = false
+        tableview.isHidden = false
     }
     
     private func setupView() {
