@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 enum CoinsViewControllerState {
     case loading
@@ -18,7 +19,12 @@ enum ApiEnvironment {
     case apiUSA
 }
 
-protocol CoinsViewModelProtocol {
+protocol ViewModelWithState {
+    associatedtype State
+    var statePublisher: AnyPublisher<State, Never> { get }
+}
+
+protocol CoinsViewModelProtocol: ViewModelWithState where State == CoinsViewControllerState {
     func searchBar(textDidChange searchText: String)
     func numberOfItemsInSection() -> Int
     func cellForItemAt(indexPath: IndexPath) -> CoinModel
@@ -27,19 +33,23 @@ protocol CoinsViewModelProtocol {
     func attempts() -> Int
     func loadDataCoinsUS()
     func loadDataCoinsBR()
-    var state: Bindable<CoinsViewControllerState> { get }
     var attempt: Int { get }
     var isRealCoin: Bool { get }
 }
 
 class CoinsViewModel: CoinsViewModelProtocol {
-    private(set) var state: Bindable<CoinsViewControllerState> = Bindable(value: .loading)
     private(set) var attempt = 0
     private(set) var isRealCoin = false
     private var service: ServiceProtocol
     var top10Coins: [CoinModel] = []
     var coinsList: [CoinModel] = []
     var filteredCoinsList: [CoinModel] = []
+    
+    @Published private var state: CoinsViewControllerState = .loading
+
+     var statePublisher: AnyPublisher<CoinsViewControllerState, Never> {
+         $state.eraseToAnyPublisher()
+     }
     
     init(serviceProtocol: ServiceProtocol = Service()) {
         self.service = serviceProtocol
@@ -81,7 +91,7 @@ class CoinsViewModel: CoinsViewModelProtocol {
     }
     
     func attempts() -> Int {
-        attempt = state.value == .error ? attempt + 1 : 0
+        attempt = state == .error ? attempt + 1 : 0
         return attempt
     }
     
@@ -94,6 +104,8 @@ class CoinsViewModel: CoinsViewModelProtocol {
     }
     
     func loadDataCoins(from url: ApiEnvironment, isRealCoin: Bool) {
+        state = .loading
+        
         clearLists()
         self.isRealCoin = isRealCoin
         service.getCoins(from: url) { coins in
@@ -103,10 +115,10 @@ class CoinsViewModel: CoinsViewModelProtocol {
             let top10 = self.coinsList.sorted(by: { $0.priceChangePercentage24H > $1.priceChangePercentage24H })
             self.top10Coins.append(contentsOf: top10.prefix(10))
             self.coinsList = self.coinsList.sorted { $0.marketCapRank < $1.marketCapRank }
-            self.state.value = .loaded
+            self.state = .loaded
         } onError: { error in
             print("DEBUG: Erro ao buscar as criptomoedas.. \(error.localizedDescription)")
-            self.state.value = .error
+            self.state = .error
         }
     }
     

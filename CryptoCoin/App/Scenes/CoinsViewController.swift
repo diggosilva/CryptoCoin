@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import Combine
 
 class CoinsViewController: UIViewController {
     
     let coinView = CoinView()
-    let viewModel: CoinsViewModelProtocol = CoinsViewModel()
+    let viewModel: any CoinsViewModelProtocol = CoinsViewModel()
+    private var cancellables = Set<AnyCancellable>()
     
     override func loadView() {
         super.loadView()
@@ -58,7 +60,8 @@ class CoinsViewController: UIViewController {
     }
     
     private func handleStates() {
-        viewModel.state.bind { state in
+        viewModel.statePublisher.receive(on: RunLoop.main).sink { [weak self] state in
+            guard let self = self else { return }
             switch state {
             case .loading:
                 return self.showLoadingState()
@@ -67,7 +70,7 @@ class CoinsViewController: UIViewController {
             case .error:
                 return self.showErrorState()
             }
-        }
+        }.store(in: &cancellables)
     }
     
     private func showLoadingState() {
