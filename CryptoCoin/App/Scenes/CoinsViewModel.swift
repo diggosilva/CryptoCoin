@@ -19,12 +19,12 @@ enum ApiEnvironment {
     case apiUSA
 }
 
-protocol ViewModelWithState {
+protocol StatefulViewModel {
     associatedtype State
     var statePublisher: AnyPublisher<State, Never> { get }
 }
 
-protocol CoinsViewModelProtocol: ViewModelWithState where State == CoinsViewControllerState {
+protocol CoinsViewModelProtocol: StatefulViewModel where State == CoinsViewControllerState {
     func searchBar(textDidChange searchText: String)
     func numberOfItemsInSection() -> Int
     func cellForItemAt(indexPath: IndexPath) -> CoinModel
@@ -108,17 +108,21 @@ class CoinsViewModel: CoinsViewModelProtocol {
         
         clearLists()
         self.isRealCoin = isRealCoin
-        service.getCoins(from: url) { coins in
-            self.coinsList.append(contentsOf: coins)
-            self.filteredCoinsList = self.coinsList
-            
-            let top10 = self.coinsList.sorted(by: { $0.priceChangePercentage24H > $1.priceChangePercentage24H })
-            self.top10Coins.append(contentsOf: top10.prefix(10))
-            self.coinsList = self.coinsList.sorted { $0.marketCapRank < $1.marketCapRank }
-            self.state = .loaded
-        } onError: { error in
-            print("DEBUG: Erro ao buscar as criptomoedas.. \(error.localizedDescription)")
-            self.state = .error
+        
+        Task { @MainActor in
+            do {
+                let coins = try await service.getCoins(from: url)
+                self.coinsList.append(contentsOf: coins)
+                self.filteredCoinsList = self.coinsList
+                
+                let top10 = self.coinsList.sorted(by: { $0.priceChangePercentage24H > $1.priceChangePercentage24H })
+                self.top10Coins.append(contentsOf: top10.prefix(10))
+                self.coinsList = self.coinsList.sorted { $0.marketCapRank < $1.marketCapRank }
+                self.state = .loaded
+            } catch {
+                print("DEBUG: Erro ao buscar as criptomoedas.. \(error.localizedDescription)")
+                self.state = .error
+            }
         }
     }
     
