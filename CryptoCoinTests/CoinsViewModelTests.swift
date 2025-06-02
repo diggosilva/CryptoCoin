@@ -7,66 +7,116 @@
 
 import XCTest
 @testable import CryptoCoin
+import Combine
 
-class MockSuccess: ServiceProtocol {
-    func getCoins(from url: ApiEnvironment, onSuccess: @escaping([CoinModel]) -> Void, onError: @escaping(Error) -> Void) {
-        onSuccess([
-            CoinModel(marketCapRank: 1, image: "", name: "DiggoCoin", symbol: "DSC", currentPrice: 0, priceChangePercentage24H: 0),
-            CoinModel(marketCapRank: 2, image: "", name: "HelioCoin", symbol: "HMC", currentPrice: 0, priceChangePercentage24H: 0),
-            CoinModel(marketCapRank: 3, image: "", name: "DiggoCoin", symbol: "DSC", currentPrice: 0, priceChangePercentage24H: 0),
-            CoinModel(marketCapRank: 4, image: "", name: "HelioCoin", symbol: "HMC", currentPrice: 0, priceChangePercentage24H: 0),
-            CoinModel(marketCapRank: 5, image: "", name: "DiggoCoin", symbol: "DSC", currentPrice: 0, priceChangePercentage24H: 0),
-            CoinModel(marketCapRank: 6, image: "", name: "HelioCoin", symbol: "HMC", currentPrice: 0, priceChangePercentage24H: 0),
-            CoinModel(marketCapRank: 7, image: "", name: "DiggoCoin", symbol: "DSC", currentPrice: 0, priceChangePercentage24H: 0),
-            CoinModel(marketCapRank: 8, image: "", name: "HelioCoin", symbol: "HMC", currentPrice: 0, priceChangePercentage24H: 0),
-            CoinModel(marketCapRank: 9, image: "", name: "DiggoCoin", symbol: "DSC", currentPrice: 0, priceChangePercentage24H: 0),
-            CoinModel(marketCapRank: 10, image: "", name: "HelioCoin", symbol: "HMC", currentPrice: 0, priceChangePercentage24H: 0),
-            CoinModel(marketCapRank: 11, image: "", name: "DiggoCoin", symbol: "DSC", currentPrice: 0, priceChangePercentage24H: 0),
-            CoinModel(marketCapRank: 12, image: "", name: "HelioCoin", symbol: "HMC", currentPrice: 0, priceChangePercentage24H: 0),
-        ])
-    }
-}
-
-class MockFailure: ServiceProtocol {
-    func getCoins(from url: ApiEnvironment, onSuccess: @escaping([CoinModel]) -> Void, onError: @escaping(Error) -> Void) {
-        onError(NSError(domain: "Error", code: 0))
+class MockService: ServiceProtocol {
+    var isSuccess: Bool = true
+    
+    func getCoins(from url: CryptoCoin.ApiEnvironment) async throws -> [CoinModel] {
+        if isSuccess {
+            return [
+                CoinModel(marketCapRank: 1, image: "", name: "DiggoCoin", symbol: "DSC", currentPrice: 0, priceChangePercentage24H: 100),
+                CoinModel(marketCapRank: 2, image: "", name: "HelioCoin", symbol: "HMC", currentPrice: 0, priceChangePercentage24H: -10),
+            ]
+        } else {
+            throw NSError(domain: "Error", code: 0)
+        }
     }
 }
 
 final class CryptoCoinTests: XCTestCase {
     
+    private var cancellables = Set<AnyCancellable>()
+    
     override func setUp() {
         super.setUp()
     }
     
-    func testWhenSuccess() {
-        let sut: CoinsViewModel = CoinsViewModel(serviceProtocol: MockSuccess())
-        sut.state.bind { state in
-            XCTAssertTrue(state == .loaded)
-        }
+    override func tearDown() {
+        cancellables.removeAll()
+        super.tearDown()
+    }
+    
+    func testWhenSuccess() async throws {
+        let sut: CoinsViewModel = CoinsViewModel(serviceProtocol: MockService())
+        let expectation = XCTestExpectation(description: "State deveria ser .loaded")
+        
+        sut.statePublisher
+            .receive(on: RunLoop.main)
+            .sink { state in
+                if state == .loaded {
+                    expectation.fulfill()
+                }
+            }.store(in: &cancellables)
+        
         sut.loadDataCoinsUS()
         sut.loadDataCoinsBR()
+        
+        await fulfillment(of: [expectation], timeout: 2.0)
         
         let attempts = sut.attempts()
         XCTAssertEqual(attempts, 0)
         
-        sut.searchBar(textDidChange: "D")
-        XCTAssertTrue(sut.filteredCoinsList != [])
+        let firstItemTop10 = sut.cellForItemAt(indexPath: IndexPath(row: 0, section: 0))
+        let secondItemList = sut.cellForRowAt(indexPath: IndexPath(row: 1, section: 0))
+        
+        XCTAssertEqual(firstItemTop10.name, "DiggoCoin")
+        XCTAssertEqual(secondItemList.name, "HelioCoin")
     }
     
-    func testWhenFailure() {
-        let sut: CoinsViewModel = CoinsViewModel(serviceProtocol: MockFailure())
-        sut.state.bind { state in
-            XCTAssertTrue(state == .error)
-        }
+    func testSearchBar() async throws {
+        let mockService = MockService()
+        let sut: CoinsViewModel = CoinsViewModel(serviceProtocol: mockService)
+        
+        let expectation = XCTestExpectation(description: "State deveria ser .loaded")
+        
+        sut.statePublisher
+            .receive(on: RunLoop.main)
+            .sink { state in
+                if state == .loaded {
+                    expectation.fulfill()
+                }
+            }.store(in: &cancellables)
+        
+        sut.loadDataCoinsUS()
+        
+        await fulfillment(of: [expectation], timeout: 2.0)
+        
+        sut.searchBar(textDidChange: "")
+        XCTAssertEqual(sut.filteredCoinsList.count, sut.coinsList.count)
+        
+        sut.searchBar(textDidChange: "D")
+        XCTAssertFalse(sut.filteredCoinsList.isEmpty)
+        
+        sut.searchBar(textDidChange: "+")
+        XCTAssertEqual(sut.filteredCoinsList.first?.priceChangePercentage24H, 100)
+        
+        sut.searchBar(textDidChange: "-")
+        XCTAssertEqual(sut.filteredCoinsList.first?.priceChangePercentage24H, -10)
+    }
+    
+    func testWhenFailure() async throws {
+        let mockService = MockService()
+        let sut: CoinsViewModel = CoinsViewModel(serviceProtocol: mockService)
+        
+        mockService.isSuccess = false
+        
+        let expectation = XCTestExpectation(description: "State deveria ser .error")
+        
+        sut.statePublisher
+            .receive(on: RunLoop.main)
+            .sink { state in
+                if state == .error {
+                    expectation.fulfill()
+                }
+            }.store(in: &cancellables)
+        
         sut.loadDataCoinsUS()
         sut.loadDataCoinsBR()
         
+        await fulfillment(of: [expectation], timeout: 2.0)
+        
         let attempts = sut.attempts()
         XCTAssertEqual(attempts, 1)
-    }
-    
-    override func tearDown() {
-        super.tearDown()
     }
 }
