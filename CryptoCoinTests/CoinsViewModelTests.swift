@@ -6,8 +6,8 @@
 //
 
 import XCTest
-@testable import CryptoCoin
 import Combine
+@testable import CryptoCoin
 
 class MockService: ServiceProtocol {
     var isSuccess: Bool = true
