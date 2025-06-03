@@ -23,14 +23,14 @@ App written in Swift, provides information about cryptocurrencies, using API. Ap
 
 ## Features
 
-- Dark Mode
 - Modern Collection View
 - Modern Table View
-- MVVM
+- MVVM with Combine
 - View Code (UIKit)
+- Await/Async Request
 - Custom elements
-- Light Mode
 - Dark Mode
+- Unit tests
 
 ## Requirements
 
