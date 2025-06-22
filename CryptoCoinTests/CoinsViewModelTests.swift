@@ -12,7 +12,7 @@ import Combine
 class MockService: ServiceProtocol {
     var isSuccess: Bool = true
     
-    func getCoins(from url: CryptoCoin.ApiEnvironment) async throws -> [CoinModel] {
+    func getCoins(from url: ApiEnvironment) async throws -> [CoinModel] {
         if isSuccess {
             return [
                 CoinModel(marketCapRank: 1, image: "", name: "DiggoCoin", symbol: "DSC", currentPrice: 0, priceChangePercentage24H: 100),
