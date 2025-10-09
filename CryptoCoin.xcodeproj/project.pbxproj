@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CF873526082F541D27891947 /* Pods_CryptoCoin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDB91609A250CE2C48A0FCB9 /* Pods_CryptoCoin.framework */; };
+		924E23012E981A130094CA08 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 924E23002E981A130094CA08 /* SDWebImage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -21,11 +21,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		467FD4788DC2D2318A49809E /* Pods-CryptoCoin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CryptoCoin.debug.xcconfig"; path = "Target Support Files/Pods-CryptoCoin/Pods-CryptoCoin.debug.xcconfig"; sourceTree = "<group>"; };
-		921544FD2D353785008314F8 /* CryptoCoinTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CryptoCoinTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		921DDE6B2D2EAC38005AB3D1 /* CryptoCoin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptoCoin.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		CDB91609A250CE2C48A0FCB9 /* Pods_CryptoCoin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CryptoCoin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DD2AA44CB9DEB030BF18C5A0 /* Pods-CryptoCoin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CryptoCoin.release.xcconfig"; path = "Target Support Files/Pods-CryptoCoin/Pods-CryptoCoin.release.xcconfig"; sourceTree = "<group>"; };
+		921544FD2D353785008314F8 /* CryptoCoinTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = CryptoCoinTests.xctest; path = "/Volumes/HDExtDiggo8tb/VOLTAR PRA MESA/SWIFT/006 HELIO/APPs/# UIKit/016 CryptoCoin/build/Debug-iphoneos/CryptoCoin.app/PlugIns/CryptoCoinTests.xctest"; sourceTree = "<absolute>"; };
+		921DDE6B2D2EAC38005AB3D1 /* CryptoCoin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = CryptoCoin.app; path = "/Volumes/HDExtDiggo8tb/VOLTAR PRA MESA/SWIFT/006 HELIO/APPs/# UIKit/016 CryptoCoin/build/Debug-iphoneos/CryptoCoin.app"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -66,48 +63,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF873526082F541D27891947 /* Pods_CryptoCoin.framework in Frameworks */,
+				924E23012E981A130094CA08 /* SDWebImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		199D7E041DE184D3DF7FA842 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				CDB91609A250CE2C48A0FCB9 /* Pods_CryptoCoin.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		68327316D77F12F71B852FCF /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				467FD4788DC2D2318A49809E /* Pods-CryptoCoin.debug.xcconfig */,
-				DD2AA44CB9DEB030BF18C5A0 /* Pods-CryptoCoin.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		921DDE622D2EAC38005AB3D1 = {
 			isa = PBXGroup;
 			children = (
 				921DDE6D2D2EAC38005AB3D1 /* CryptoCoin */,
 				921544FE2D353785008314F8 /* CryptoCoinTests */,
-				921DDE6C2D2EAC38005AB3D1 /* Products */,
-				68327316D77F12F71B852FCF /* Pods */,
-				199D7E041DE184D3DF7FA842 /* Frameworks */,
 			);
-			sourceTree = "<group>";
-		};
-		921DDE6C2D2EAC38005AB3D1 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				921DDE6B2D2EAC38005AB3D1 /* CryptoCoin.app */,
-				921544FD2D353785008314F8 /* CryptoCoinTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,11 +108,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 921DDE7E2D2EAC39005AB3D1 /* Build configuration list for PBXNativeTarget "CryptoCoin" */;
 			buildPhases = (
-				0977F3182A6520D36A55486D /* [CP] Check Pods Manifest.lock */,
 				921DDE672D2EAC38005AB3D1 /* Sources */,
 				921DDE682D2EAC38005AB3D1 /* Frameworks */,
 				921DDE692D2EAC38005AB3D1 /* Resources */,
-				F7DB158280108482AFE13B50 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -186,8 +152,11 @@
 			);
 			mainGroup = 921DDE622D2EAC38005AB3D1;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				924E22FF2E981A130094CA08 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+			);
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 921DDE6C2D2EAC38005AB3D1 /* Products */;
+			productRefGroup = 921DDE622D2EAC38005AB3D1;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -213,52 +182,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		0977F3182A6520D36A55486D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-CryptoCoin-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F7DB158280108482AFE13B50 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CryptoCoin/Pods-CryptoCoin-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CryptoCoin/Pods-CryptoCoin-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CryptoCoin/Pods-CryptoCoin-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		921544F92D353785008314F8 /* Sources */ = {
@@ -326,7 +249,6 @@
 		};
 		921DDE7F2D2EAC39005AB3D1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 467FD4788DC2D2318A49809E /* Pods-CryptoCoin.debug.xcconfig */;
 			buildSettings = {
 				API_URL_BR = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=brl&order=market_cap_desc&per_page=90&page=1&sparkline=true&price_change_percentage=24h&locale=pt";
 				API_URL_US = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=90&page=1&sparkline=true&price_change_percentage=24h&locale=en";
@@ -356,7 +278,6 @@
 		};
 		921DDE802D2EAC39005AB3D1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DD2AA44CB9DEB030BF18C5A0 /* Pods-CryptoCoin.release.xcconfig */;
 			buildSettings = {
 				API_URL_BR = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=brl&order=market_cap_desc&per_page=90&page=1&sparkline=true&price_change_percentage=24h&locale=pt";
 				API_URL_US = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=90&page=1&sparkline=true&price_change_percentage=24h&locale=en";
@@ -534,6 +455,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		924E22FF2E981A130094CA08 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.21.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		924E23002E981A130094CA08 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 924E22FF2E981A130094CA08 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 921DDE632D2EAC38005AB3D1 /* Project object */;
 }
