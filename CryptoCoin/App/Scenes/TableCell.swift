@@ -109,6 +109,7 @@ class TableCell: UITableViewCell {
     
     private func setHierarchy() {
         addSubviews([marketCapRankLabel, coinImage, nameLabel, symbolLabel, currentPriceLabel, percentage24HLabel])
+        backgroundColor = .tertiarySystemBackground
     }
     
     private func setConstraints() {

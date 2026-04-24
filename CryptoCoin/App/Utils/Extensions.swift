@@ -9,24 +9,17 @@ import UIKit
 
 extension UIView {
     func addSubviews(_ views: [UIView]) {
-        views.forEach({ addSubview($0) })
+        views.forEach { addSubview($0) }
     }
 }
 
 extension Bundle {
-    var apiUSA: String? {
-        return self.object(forInfoDictionaryKey: "ApiUrlUS") as? String
-    }
-    
-    var apiBRA: String? {
-        return self.object(forInfoDictionaryKey: "ApiUrlBR") as? String
-    }
+    var apiUSA: String? { return self.object(forInfoDictionaryKey: "ApiUrlUS") as? String }
+    var apiBRA: String? { return self.object(forInfoDictionaryKey: "ApiUrlBR") as? String }
 }
 
 func configCellForCollection(_ cell: UIView) {
-    cell.backgroundColor = .systemBackground
-    cell.layer.borderWidth = 1
-    cell.layer.borderColor = UIColor.lightGray.cgColor
+    cell.backgroundColor = .tertiarySystemBackground
     cell.layer.shadowColor = UIColor.black.cgColor
     cell.layer.shadowOffset = CGSize(width: 5, height: 5)
     cell.layer.shadowOpacity = 0.3

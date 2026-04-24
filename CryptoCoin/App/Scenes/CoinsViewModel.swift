@@ -9,6 +9,7 @@ import Foundation
 import Combine
 
 enum CoinsViewControllerState {
+    case idle
     case loading
     case loaded
     case error
@@ -19,6 +20,7 @@ enum ApiEnvironment {
     case apiUSA
 }
 
+@MainActor
 protocol StatefulViewModel {
     associatedtype State
     var statePublisher: AnyPublisher<State, Never> { get }
@@ -45,7 +47,7 @@ class CoinsViewModel: CoinsViewModelProtocol {
     var coinsList: [CoinModel] = []
     var filteredCoinsList: [CoinModel] = []
     
-    @Published private var state: CoinsViewControllerState = .loading
+    @Published private var state: CoinsViewControllerState = .idle
 
      var statePublisher: AnyPublisher<CoinsViewControllerState, Never> {
          $state.eraseToAnyPublisher()
@@ -109,7 +111,7 @@ class CoinsViewModel: CoinsViewModelProtocol {
         clearLists()
         self.isRealCoin = isRealCoin
         
-        Task { @MainActor in
+        Task {
             do {
                 let coins = try await service.getCoins(from: url)
                 self.coinsList.append(contentsOf: coins)

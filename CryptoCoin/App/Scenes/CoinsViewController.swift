@@ -63,12 +63,10 @@ class CoinsViewController: UIViewController {
         viewModel.statePublisher.receive(on: RunLoop.main).sink { [weak self] state in
             guard let self = self else { return }
             switch state {
-            case .loading:
-                return self.showLoadingState()
-            case .loaded:
-                return self.showLoadedState()
-            case .error:
-                return self.showErrorState()
+            case .idle: break
+            case .loading: return self.showLoadingState()
+            case .loaded: return self.showLoadedState()
+            case .error: return self.showErrorState()
             }
         }.store(in: &cancellables)
     }
@@ -80,8 +78,6 @@ class CoinsViewController: UIViewController {
     private func showLoadedState() {
         coinView.top10Label.text = "Top \(viewModel.numberOfItemsInSection()) Maiores variações"
         coinView.setLoadedState()
-        coinView.collectionView.reloadData()
-        coinView.tableview.reloadData()
     }
     
     private func showErrorState() {
