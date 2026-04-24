@@ -39,6 +39,7 @@ class CoinView: UIView {
         cv.register(CollectionCell.self, forCellWithReuseIdentifier: CollectionCell.identifier)
         cv.alwaysBounceHorizontal = true
         cv.showsHorizontalScrollIndicator = false
+        cv.backgroundColor = .secondarySystemBackground
         return cv
     }()
     
@@ -124,6 +125,8 @@ class CoinView: UIView {
         loadingLabel.isHidden = true
         collectionView.isHidden = false
         tableview.isHidden = false
+        collectionView.reloadData()
+        tableview.reloadData()
     }
     
     private func setupView() {
@@ -132,7 +135,7 @@ class CoinView: UIView {
     }
     
     private func setHierarchy() {
-        backgroundColor = .systemBackground
+        backgroundColor = .secondarySystemBackground
         addSubviews([searchBar, top10Label, collectionView, divider, allCoinsLabel, coinLabel, priceLabel, tableview, spinner, loadingLabel])
     }
     
